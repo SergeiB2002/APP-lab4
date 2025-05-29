@@ -12,7 +12,6 @@ MANAGER_PWD = "managerpwd"
 STORAGE_JID = f"storage@{DOMAIN}"
 STORAGE_PWD = "storagepwd"
 
-# Параметр задержки обработки заказа (секунд на товар)
 PROCESSING_TIME_PER_ITEM = 2
 
 class ManagerAgent(Agent):
@@ -66,7 +65,6 @@ class ManagerAgent(Agent):
             elif mtype == "OutOfStock":
                 print(f"[Manager] Out of stock: {content.get('item')} qty {content.get('qty')}")
                 self.agent.idle_workers.append(str(msg.sender))
-                # Повторная попытка позже
                 failed_order = content.get('order_id')
                 # self.agent.orders.insert(0, (failed_order, self.agent.stored_items[failed_order]))
             elif mtype == "ReplenishNeeded":
@@ -107,7 +105,6 @@ class WorkerAgent(Agent):
             items = content["items"]
             print(f"[{self.agent.jid}] Received order {order_id}: {items}")
 
-            # Симуляция времени обработки заказа
             processing_time = len(items) * PROCESSING_TIME_PER_ITEM
             print(f"[{self.agent.jid}] Processing time: {processing_time}s")
             await asyncio.sleep(processing_time)
